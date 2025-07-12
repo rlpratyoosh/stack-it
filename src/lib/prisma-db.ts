@@ -1,4 +1,5 @@
 import { prisma } from "./prisma";
+import { currentUser } from "@clerk/nextjs/server";
 
 export const db = {
   // 👤 USERS
@@ -20,6 +21,31 @@ export const db = {
     return prisma.user.create({
       data: { clerkId, username, email },
     });
+  },
+
+  getOrCreateUser: async (clerkId: string) => {
+    // First try to get existing user
+    let user = await prisma.user.findUnique({
+      where: { clerkId },
+    });
+
+    // If user doesn't exist, create them using Clerk data
+    if (!user) {
+      const clerkUser = await currentUser();
+      if (!clerkUser) {
+        throw new Error("No authenticated user found");
+      }
+
+      user = await prisma.user.create({
+        data: {
+          clerkId,
+          username: clerkUser.username || clerkUser.firstName || "User",
+          email: clerkUser.emailAddresses[0]?.emailAddress || "",
+        },
+      });
+    }
+
+    return user;
   },
 
   // ❓ QUESTIONS
@@ -136,6 +162,32 @@ export const db = {
       where: { userId },
       orderBy: { createdAt: "desc" },
     });
+  },
+
+  // 🏷️ TAGS
+  getAllTags: async () => {
+    return prisma.tag.findMany({
+      orderBy: { name: "asc" },
+    });
+  },
+
+  createTag: async (name: string) => {
+    return prisma.tag.create({
+      data: { name },
+    });
+  },
+
+  findOrCreateTags: async (tagNames: string[]) => {
+    const tags = await Promise.all(
+      tagNames.map(async (name) => {
+        return prisma.tag.upsert({
+          where: { name },
+          update: {},
+          create: { name },
+        });
+      })
+    );
+    return tags;
   },
 
   updateQuestionAcceptedAnswer: async (
