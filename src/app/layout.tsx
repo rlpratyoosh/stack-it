@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Header from "@/components/Header";
 import "./globals.css";
+import { ClerkProvider } from "@clerk/nextjs";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -14,10 +15,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className="dark">
-        <Header />
-        {children}
-      </body>
+      <ClerkProvider>
+        <body className="dark">
+          <Header />
+          {children}
+        </body>
+      </ClerkProvider>
     </html>
   );
 }

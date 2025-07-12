@@ -137,4 +137,14 @@ export const db = {
       orderBy: { createdAt: "desc" },
     });
   },
+
+  updateQuestionAcceptedAnswer: async (
+    questionId: string,
+    answerId: string
+  ) => {
+    return prisma.question.update({
+      where: { id: questionId },
+      data: { acceptedAnswerId: answerId },
+    });
+  },
 };
