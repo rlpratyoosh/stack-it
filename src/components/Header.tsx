@@ -8,6 +8,7 @@ import { db } from "@/lib/prisma-db";
 import NotificationBell from "./NotificationBell";
 import { MdHomeFilled } from "react-icons/md";
 import { TbMessageQuestion } from "react-icons/tb";
+import { RiAdminLine } from "react-icons/ri";
 
 export default async function Header() {
   const { userId } = await auth();
@@ -20,11 +21,13 @@ export default async function Header() {
     userId: string;
   }> = [];
   let user = null;
+  let isAdmin = false;
 
   if (userId) {
     user = await db.getOrCreateUser(userId);
     if (user) {
       notifications = await db.getNotificationsByUser(user.id);
+      isAdmin = await db.isUserAdmin(userId);
     }
   }
 
@@ -55,6 +58,14 @@ export default async function Header() {
               <span className="hidden sm:inline">Your Questions</span>
             </Button>
           </Link>
+          {isAdmin && (
+            <Link href='/admin'>
+              <Button variant='outline' className="cursor-pointer flex items-center gap-1 text-sm border-red-200 text-red-700 hover:bg-red-50">
+                <RiAdminLine />
+                <span className="hidden sm:inline">Admin</span>
+              </Button>
+            </Link>
+          )}
           <Link href='/ask'>
             <Button variant="default" className="cursor-pointer flex items-center text-sm">
               <Plus className="h-3.5 w-3.5" />

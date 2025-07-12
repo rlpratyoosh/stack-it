@@ -4,6 +4,7 @@ import { NextResponse } from "next/server";
 const isPublicRoute = createRouteMatcher(["/", "/question/(.*)", "/user/(.*)"]);
 
 export default clerkMiddleware(async (auth, req) => {
+  // Protect non-public routes
   if (!isPublicRoute(req)) {
     await auth.protect();
   }

@@ -7,14 +7,18 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "db:seed": "tsx prisma/seed.ts"
+    "db:seed": "tsx prisma/seed.ts",
+    "admin:promote": "tsx scripts/promote-admin.ts"
   },
   "dependencies": {
     "@clerk/nextjs": "^6.24.0",
     "@hookform/resolvers": "^5.1.1",
     "@prisma/client": "^6.11.1",
     "@radix-ui/react-slot": "^1.2.3",
+    "@radix-ui/react-tabs": "^1.1.12",
+    "@tiptap/extension-link": "^2.26.1",
     "@tiptap/extension-placeholder": "^2.26.1",
+    "@tiptap/extension-text-align": "^2.26.1",
     "@tiptap/pm": "^2.26.1",
     "@tiptap/react": "^2.26.1",
     "@tiptap/starter-kit": "^2.26.1",

@@ -215,6 +215,33 @@
     @apply pl-1;
   }
   
+  /* Text alignment support */
+  .prose *[style*="text-align: left"],
+  .ProseMirror *[style*="text-align: left"] {
+    text-align: left !important;
+  }
+  
+  .prose *[style*="text-align: center"],
+  .ProseMirror *[style*="text-align: center"] {
+    text-align: center !important;
+  }
+  
+  .prose *[style*="text-align: right"],
+  .ProseMirror *[style*="text-align: right"] {
+    text-align: right !important;
+  }
+  
+  .prose *[style*="text-align: justify"],
+  .ProseMirror *[style*="text-align: justify"] {
+    text-align: justify !important;
+  }
+  
+  /* Link styling in editor and display */
+  .prose a,
+  .ProseMirror a {
+    @apply text-blue-600 dark:text-blue-400 hover:underline cursor-pointer;
+  }
+  
   .prose blockquote {
     @apply border-l-4 border-gray-300 dark:border-gray-700 pl-4 italic text-gray-600 dark:text-gray-400;
   }

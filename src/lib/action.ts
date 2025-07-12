@@ -320,3 +320,117 @@ export async function markNotificationAsRead(notificationId: string) {
     };
   }
 }
+
+// 🛡️ ADMIN ACTIONS
+export async function checkAdminAccess(): Promise<boolean> {
+  try {
+    const { userId } = await auth();
+    if (!userId) return false;
+    
+    return await db.isUserAdmin(userId);
+  } catch (error) {
+    console.error('Error checking admin access:', error);
+    return false;
+  }
+}
+
+export async function adminDeleteQuestion(questionId: string) {
+  try {
+    const { userId } = await auth();
+    if (!userId) throw new Error('Unauthorized');
+
+    // Check if user is admin
+    const isAdmin = await db.isUserAdmin(userId);
+    if (!isAdmin) throw new Error('Admin access required');
+
+    await db.adminDeleteQuestion(questionId);
+    
+    revalidatePath('/admin');
+    revalidatePath('/');
+    
+    return { success: true };
+  } catch (error) {
+    console.error('Admin question deletion error:', error);
+    throw error;
+  }
+}
+
+export async function adminDeleteAnswer(answerId: string) {
+  try {
+    const { userId } = await auth();
+    if (!userId) throw new Error('Unauthorized');
+
+    // Check if user is admin
+    const isAdmin = await db.isUserAdmin(userId);
+    if (!isAdmin) throw new Error('Admin access required');
+
+    // Get answer info for revalidation
+    const answer = await db.getAnswerById(answerId);
+    if (!answer) throw new Error('Answer not found');
+
+    await db.adminDeleteAnswer(answerId);
+    
+    revalidatePath('/admin');
+    revalidatePath(`/question/${answer.questionId}`);
+    
+    return { success: true };
+  } catch (error) {
+    console.error('Admin answer deletion error:', error);
+    throw error;
+  }
+}
+
+export async function adminDeleteComment(commentId: string) {
+  try {
+    const { userId } = await auth();
+    if (!userId) throw new Error('Unauthorized');
+
+    // Check if user is admin
+    const isAdmin = await db.isUserAdmin(userId);
+    if (!isAdmin) throw new Error('Admin access required');
+
+    // Get comment info for revalidation
+    const comment = await prisma.comment.findUnique({
+      where: { id: commentId },
+      include: {
+        answer: {
+          include: {
+            question: true,
+          },
+        },
+      },
+    });
+
+    if (!comment) throw new Error('Comment not found');
+
+    await db.adminDeleteComment(commentId);
+    
+    revalidatePath('/admin');
+    revalidatePath(`/question/${comment.answer.questionId}`);
+    
+    return { success: true };
+  } catch (error) {
+    console.error('Admin comment deletion error:', error);
+    throw error;
+  }
+}
+
+export async function adminUpdateUserRole(userId: string, role: 'USER' | 'ADMIN') {
+  try {
+    const { userId: currentUserId } = await auth();
+    if (!currentUserId) throw new Error('Unauthorized');
+
+    // Check if current user is admin
+    const isAdmin = await db.isUserAdmin(currentUserId);
+    if (!isAdmin) throw new Error('Admin access required');
+
+    await db.updateUserRole(userId, role);
+    
+    revalidatePath('/admin');
+    
+    return { success: true };
+  } catch (error) {
+    console.error('Admin user role update error:', error);
+    throw error;
+  }
+}

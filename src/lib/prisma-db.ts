@@ -307,4 +307,155 @@ export const db = {
       where: { id: commentId },
     });
   },
+
+  // 🛡️ ADMIN FUNCTIONS
+  isUserAdmin: async (clerkId: string) => {
+    const user = await prisma.user.findUnique({
+      where: { clerkId },
+      select: { role: true },
+    });
+    return user?.role === 'ADMIN';
+  },
+
+  getAllQuestionsForAdmin: async () => {
+    return prisma.question.findMany({
+      include: {
+        user: true,
+        tags: { include: { tag: true } },
+        answers: {
+          include: {
+            user: true,
+            votes: true,
+            comments: {
+              include: {
+                user: true,
+              },
+            },
+          },
+        },
+      },
+      orderBy: { createdAt: 'desc' },
+    });
+  },
+
+  getAllAnswersForAdmin: async () => {
+    return prisma.answer.findMany({
+      include: {
+        user: true,
+        question: {
+          include: {
+            user: true,
+          },
+        },
+        votes: true,
+        comments: {
+          include: {
+            user: true,
+          },
+        },
+      },
+      orderBy: { createdAt: 'desc' },
+    });
+  },
+
+  getAllCommentsForAdmin: async () => {
+    return prisma.comment.findMany({
+      include: {
+        user: true,
+        answer: {
+          include: {
+            user: true,
+            question: {
+              include: {
+                user: true,
+              },
+            },
+          },
+        },
+      },
+      orderBy: { createdAt: 'desc' },
+    });
+  },
+
+  getAllUsersForAdmin: async () => {
+    return prisma.user.findMany({
+      include: {
+        questions: true,
+        answers: true,
+        comments: true,
+        _count: {
+          select: {
+            questions: true,
+            answers: true,
+            comments: true,
+            votes: true,
+          },
+        },
+      },
+      orderBy: { createdAt: 'desc' },
+    });
+  },
+
+  updateUserRole: async (userId: string, role: 'USER' | 'ADMIN') => {
+    return prisma.user.update({
+      where: { id: userId },
+      data: { role },
+    });
+  },
+
+  // Admin delete functions (no ownership checks)
+  adminDeleteQuestion: async (questionId: string) => {
+    // Delete in order due to foreign key constraints
+    // 1. Delete question tags
+    await prisma.questionTag.deleteMany({
+      where: { questionId },
+    });
+
+    // 2. Delete votes on answers for this question
+    await prisma.vote.deleteMany({
+      where: {
+        answer: {
+          questionId,
+        },
+      },
+    });
+
+    // 3. Delete answers
+    await prisma.answer.deleteMany({
+      where: { questionId },
+    });
+
+    // 4. Delete notifications related to this question
+    await prisma.notification.deleteMany({
+      where: {
+        link: `/question/${questionId}`,
+      },
+    });
+
+    // 5. Finally delete the question
+    return prisma.question.delete({
+      where: { id: questionId },
+    });
+  },
+
+  adminDeleteAnswer: async (answerId: string) => {
+    // Delete votes and comments first
+    await prisma.vote.deleteMany({
+      where: { answerId },
+    });
+
+    await prisma.comment.deleteMany({
+      where: { answerId },
+    });
+
+    return prisma.answer.delete({
+      where: { id: answerId },
+    });
+  },
+
+  adminDeleteComment: async (commentId: string) => {
+    return prisma.comment.delete({
+      where: { id: commentId },
+    });
+  },
 };

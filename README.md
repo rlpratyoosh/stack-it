@@ -30,6 +30,9 @@ A modern, full-stack Q&A forum built with Next.js, TypeScript, Tailwind CSS, and
 - **⚡ Optimistic UI**: Real-time updates for voting, answer acceptance, and question deletion
 - **🎯 Auto User Creation**: Users are automatically created on first interaction
 - **🔄 Database Seeding**: Pre-populated with common programming tags
+- **🛡️ Admin Panel**: Role-based admin panel for content moderation and user management
+- **👑 Role Management**: Promote/demote users to admin with full permissions
+- **🔒 Access Control**: Middleware-protected admin routes with database role verification
 
 ## 🛠️ Tech Stack
 
@@ -79,17 +82,54 @@ A modern, full-stack Q&A forum built with Next.js, TypeScript, Tailwind CSS, and
 
    Open [http://localhost:3000](http://localhost:3000) in your browser.
 
+## 🛡️ Admin Panel
+
+### Features
+The admin panel provides comprehensive moderation and management capabilities:
+
+- **📊 Dashboard**: Overview statistics for questions, answers, comments, and users
+- **❓ Question Management**: View and delete any question with full context
+- **💬 Answer Management**: Moderate answers with vote scores and comment counts
+- **🗨️ Comment Management**: Manage comments with full threading context
+- **👥 User Management**: View user statistics and manage roles
+- **👑 Role Management**: Promote/demote admin privileges
+- **🔒 Secure Access**: Middleware-protected routes with database role verification
+
+### Admin Access
+To access the admin panel:
+
+1. **Promote a user to admin role**:
+   ```bash
+   npm run admin:promote <clerk_user_id>
+   ```
+
+2. **Navigate to admin panel**: 
+   - Users with admin role will see an "Admin" button in the header
+   - Admin panel is accessible at `/admin`
+   - Non-admin users are automatically redirected
+
+### Admin Capabilities
+- **Full Content Moderation**: Delete any question, answer, or comment
+- **User Role Management**: Promote users to admin or revoke admin access
+- **Content Overview**: View all content with full context and metadata
+- **User Statistics**: Monitor user activity and engagement
+- **Optimistic UI**: Real-time updates with proper error handling
+
 ## 🗄️ Database Schema
 
 The application uses the following main models:
 
-- **User**: Stores user information from Clerk with auto-creation
+- **User**: Stores user information from Clerk with auto-creation and role management
 - **Question**: Forum questions with title, description, and tags
 - **Answer**: Answers to questions with voting and comment support
 - **Comment**: Comments on answers with @mention functionality
 - **Tag**: Categorization system for questions with auto-creation
 - **Vote**: User votes on answers (+1 or -1)
 - **Notification**: User notifications for comments and @mentions
+
+### Role-Based Access
+- **USER**: Default role for all users (can ask questions, answer, comment, vote)
+- **ADMIN**: Elevated permissions (all user permissions + moderation capabilities)
 
 ## 🔧 Setup Instructions
 
@@ -113,6 +153,8 @@ The application uses the following main models:
 - `/ask` - Create new questions (authenticated users only)
 - `/question/[id]` - View question details and answers
 - `/user/[id]` - User profile and their questions
+- `/my-questions` - User's own questions management page
+- `/admin` - Admin panel for content moderation (admin users only)
 
 #### Components
 - `QuestionCard` - Display question preview
@@ -174,6 +216,15 @@ src/
 │   └── utils.ts         # Helper functions
 └── prisma/              # Database schema and migrations
 ```
+
+## 📜 Available Scripts
+
+- `npm run dev` - Start development server
+- `npm run build` - Build for production
+- `npm run start` - Start production server
+- `npm run lint` - Run ESLint
+- `npm run db:seed` - Seed database with default tags
+- `npm run admin:promote <clerk_id>` - Promote user to admin role
 
 ## 🤝 Contributing
 
