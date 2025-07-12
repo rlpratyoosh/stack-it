@@ -48,27 +48,27 @@ export default function AdminUsers({ users }: AdminUsersProps) {
   if (users.length === 0) {
     return (
       <div className="text-center py-8">
-        <p className="text-gray-500">No users found.</p>
+        <p className="text-gray-500 dark:text-gray-400">No users found.</p>
       </div>
     );
   }
 
   return (
-    <div className="bg-white rounded-lg border shadow-sm">
-      <div className="p-4 border-b">
-        <h2 className="text-lg font-semibold">All Users</h2>
-        <p className="text-sm text-gray-600">Manage user roles and view user statistics</p>
+    <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm">
+      <div className="p-4 border-b border-gray-200 dark:border-gray-700">
+        <h2 className="text-lg font-semibold text-gray-900 dark:text-white">All Users</h2>
+        <p className="text-sm text-gray-600 dark:text-gray-400">Manage user roles and view user statistics</p>
       </div>
       
-      <div className="divide-y">
+      <div className="divide-y divide-gray-200 dark:divide-gray-700">
         {users.map((user) => (
-          <div key={user.id} className="p-4 hover:bg-gray-50">
+          <div key={user.id} className="p-4 hover:bg-gray-50 dark:hover:bg-gray-700/50">
             <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-3 mb-2">
                   <div className="flex items-center gap-2">
-                    <User className="h-4 w-4 text-gray-500" />
-                    <span className="font-medium text-gray-900">{user.username}</span>
+                    <User className="h-4 w-4 text-gray-500 dark:text-gray-400" />
+                    <span className="font-medium text-gray-900 dark:text-white">{user.username}</span>
                   </div>
                   
                   <Badge 
@@ -80,36 +80,36 @@ export default function AdminUsers({ users }: AdminUsersProps) {
                   </Badge>
                 </div>
                 
-                <div className="text-sm text-gray-600 mb-3">
+                <div className="text-sm text-gray-600 dark:text-gray-400 mb-3">
                   <p>{user.email}</p>
                   <p>Joined {formatDistanceToNow(new Date(user.createdAt))} ago</p>
                 </div>
 
                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 text-sm">
                   <div className="flex items-center gap-2">
-                    <HelpCircle className="h-4 w-4 text-blue-500" />
-                    <span className="text-gray-600">
+                    <HelpCircle className="h-4 w-4 text-blue-500 dark:text-blue-400" />
+                    <span className="text-gray-600 dark:text-gray-400">
                       <span className="font-medium">{user._count.questions}</span> questions
                     </span>
                   </div>
                   
                   <div className="flex items-center gap-2">
-                    <MessageSquare className="h-4 w-4 text-green-500" />
-                    <span className="text-gray-600">
+                    <MessageSquare className="h-4 w-4 text-green-500 dark:text-green-400" />
+                    <span className="text-gray-600 dark:text-gray-400">
                       <span className="font-medium">{user._count.answers}</span> answers
                     </span>
                   </div>
                   
                   <div className="flex items-center gap-2">
-                    <MessageCircle className="h-4 w-4 text-purple-500" />
-                    <span className="text-gray-600">
+                    <MessageCircle className="h-4 w-4 text-purple-500 dark:text-purple-400" />
+                    <span className="text-gray-600 dark:text-gray-400">
                       <span className="font-medium">{user._count.comments}</span> comments
                     </span>
                   </div>
                   
                   <div className="flex items-center gap-2">
-                    <Star className="h-4 w-4 text-yellow-500" />
-                    <span className="text-gray-600">
+                    <Star className="h-4 w-4 text-yellow-500 dark:text-yellow-400" />
+                    <span className="text-gray-600 dark:text-gray-400">
                       <span className="font-medium">{user._count.votes}</span> votes
                     </span>
                   </div>

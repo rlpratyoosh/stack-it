@@ -6,6 +6,7 @@ import { Button } from "./ui/button";
 import { Plus } from "lucide-react";
 import { db } from "@/lib/prisma-db";
 import NotificationBell from "./NotificationBell";
+import DarkModeToggle from "./DarkModeToggle";
 import { MdHomeFilled } from "react-icons/md";
 import { TbMessageQuestion } from "react-icons/tb";
 import { RiAdminLine } from "react-icons/ri";
@@ -33,7 +34,7 @@ export default async function Header() {
 
   return (
     <header className="w-full h-16 bg-card border-border border-b flex items-center justify-between p-2 sm:p-5">
-      <div className="h-full flex items-center justify-center px-2 sm:px-6">
+      <div className="h-full flex items-center justify-center px-2 sm:px-6 gap-3">
         <Link href="/" className="flex items-center gap-2">
           <div className="text-2xl">
             <SiBetterstack />
@@ -42,6 +43,7 @@ export default async function Header() {
             StackIt
           </h1>
         </Link>
+        <DarkModeToggle />
       </div>
       
       <div className="flex items-center justify-center gap-3">

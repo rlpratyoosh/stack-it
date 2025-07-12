@@ -60,21 +60,21 @@ export default function AdminComments({ comments }: AdminCommentsProps) {
   if (optimisticComments.length === 0) {
     return (
       <div className="text-center py-8">
-        <p className="text-gray-500">No comments found.</p>
+        <p className="text-gray-500 dark:text-gray-400">No comments found.</p>
       </div>
     );
   }
 
   return (
-    <div className="bg-white rounded-lg border shadow-sm">
-      <div className="p-4 border-b">
-        <h2 className="text-lg font-semibold">All Comments</h2>
-        <p className="text-sm text-gray-600">Manage comments from all users</p>
+    <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm">
+      <div className="p-4 border-b border-gray-200 dark:border-gray-700">
+        <h2 className="text-lg font-semibold text-gray-900 dark:text-white">All Comments</h2>
+        <p className="text-sm text-gray-600 dark:text-gray-400">Manage comments from all users</p>
       </div>
       
-      <div className="divide-y">
+      <div className="divide-y divide-gray-200 dark:divide-gray-700">
         {optimisticComments.map((comment) => (
-          <div key={comment.id} className="p-4 hover:bg-gray-50">
+          <div key={comment.id} className="p-4 hover:bg-gray-50 dark:hover:bg-gray-700/50">
             <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-2 mb-2">
@@ -86,7 +86,7 @@ export default function AdminComments({ comments }: AdminCommentsProps) {
                   </Badge>
                 </div>
                 
-                <div className="flex flex-wrap items-center gap-2 text-sm text-gray-600 mb-2">
+                <div className="flex flex-wrap items-center gap-2 text-sm text-gray-600 dark:text-gray-400 mb-2">
                   <div className="flex items-center gap-1">
                     <User className="h-3 w-3" />
                     <span>{comment.user.username}</span>
@@ -97,7 +97,7 @@ export default function AdminComments({ comments }: AdminCommentsProps) {
                   <span>Answer by {comment.answer.user.username}</span>
                 </div>
 
-                <div className="text-sm text-gray-900 bg-gray-50 p-3 rounded border-l-4 border-blue-200">
+                <div className="text-sm text-gray-900 dark:text-gray-100 bg-gray-50 dark:bg-gray-700 p-3 rounded border-l-4 border-blue-200 dark:border-blue-400">
                   {comment.content}
                 </div>
               </div>

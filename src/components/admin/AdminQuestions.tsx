@@ -58,30 +58,30 @@ export default function AdminQuestions({ questions }: AdminQuestionsProps) {
   if (optimisticQuestions.length === 0) {
     return (
       <div className="text-center py-8">
-        <p className="text-gray-500">No questions found.</p>
+        <p className="text-gray-500 dark:text-gray-400">No questions found.</p>
       </div>
     );
   }
 
   return (
-    <div className="bg-white rounded-lg border shadow-sm">
-      <div className="p-4 border-b">
-        <h2 className="text-lg font-semibold">All Questions</h2>
-        <p className="text-sm text-gray-600">Manage questions from all users</p>
+    <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm">
+      <div className="p-4 border-b border-gray-200 dark:border-gray-700">
+        <h2 className="text-lg font-semibold text-gray-900 dark:text-white">All Questions</h2>
+        <p className="text-sm text-gray-600 dark:text-gray-400">Manage questions from all users</p>
       </div>
       
-      <div className="divide-y">
+      <div className="divide-y divide-gray-200 dark:divide-gray-700">
         {optimisticQuestions.map((question) => (
-          <div key={question.id} className="p-4 hover:bg-gray-50">
+          <div key={question.id} className="p-4 hover:bg-gray-50 dark:hover:bg-gray-700/50">
             <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
               <div className="flex-1 min-w-0">
                 <div className="flex items-start gap-2 mb-2">
-                  <h3 className="font-medium text-gray-900 line-clamp-2">
+                  <h3 className="font-medium text-gray-900 dark:text-white line-clamp-2">
                     {question.title}
                   </h3>
                 </div>
                 
-                <div className="flex flex-wrap items-center gap-2 text-sm text-gray-600 mb-2">
+                <div className="flex flex-wrap items-center gap-2 text-sm text-gray-600 dark:text-gray-400 mb-2">
                   <span>by {question.user.username}</span>
                   <span>•</span>
                   <span>{formatDistanceToNow(new Date(question.createdAt))} ago</span>
@@ -101,7 +101,7 @@ export default function AdminQuestions({ questions }: AdminQuestionsProps) {
                 </div>
 
                 <div 
-                  className="text-sm text-gray-600 line-clamp-2"
+                  className="text-sm text-gray-600 dark:text-gray-400 line-clamp-2"
                   dangerouslySetInnerHTML={{ 
                     __html: question.description.replace(/<[^>]*>/g, '').substring(0, 100) + '...' 
                   }}

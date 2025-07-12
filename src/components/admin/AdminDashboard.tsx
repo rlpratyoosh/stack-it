@@ -116,21 +116,21 @@ export default function AdminDashboard({
     <div className="space-y-6">
       {/* Stats Overview */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <div className="bg-white p-6 rounded-lg border shadow-sm">
-          <h3 className="text-sm font-medium text-gray-500">Total Questions</h3>
-          <p className="text-2xl font-bold text-gray-900">{stats.questions}</p>
+        <div className="bg-white dark:bg-gray-800 p-6 rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm">
+          <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400">Total Questions</h3>
+          <p className="text-2xl font-bold text-gray-900 dark:text-white">{stats.questions}</p>
         </div>
-        <div className="bg-white p-6 rounded-lg border shadow-sm">
-          <h3 className="text-sm font-medium text-gray-500">Total Answers</h3>
-          <p className="text-2xl font-bold text-gray-900">{stats.answers}</p>
+        <div className="bg-white dark:bg-gray-800 p-6 rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm">
+          <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400">Total Answers</h3>
+          <p className="text-2xl font-bold text-gray-900 dark:text-white">{stats.answers}</p>
         </div>
-        <div className="bg-white p-6 rounded-lg border shadow-sm">
-          <h3 className="text-sm font-medium text-gray-500">Total Comments</h3>
-          <p className="text-2xl font-bold text-gray-900">{stats.comments}</p>
+        <div className="bg-white dark:bg-gray-800 p-6 rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm">
+          <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400">Total Comments</h3>
+          <p className="text-2xl font-bold text-gray-900 dark:text-white">{stats.comments}</p>
         </div>
-        <div className="bg-white p-6 rounded-lg border shadow-sm">
-          <h3 className="text-sm font-medium text-gray-500">Total Users</h3>
-          <p className="text-2xl font-bold text-gray-900">{stats.users}</p>
+        <div className="bg-white dark:bg-gray-800 p-6 rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm">
+          <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400">Total Users</h3>
+          <p className="text-2xl font-bold text-gray-900 dark:text-white">{stats.users}</p>
         </div>
       </div>
 

@@ -18,7 +18,7 @@ A modern, full-stack Q&A forum built with Next.js, TypeScript, Tailwind CSS, and
 - **✅ Accept Answers**: Question owners can mark answers as accepted
 - **🔔 Notifications**: Get notified for comments and @mentions
 - **💬 Comment System**: Comment on answers with @mention support
-- **🌙 Dark Mode**: Beautiful dark mode support
+- **🌙 Dark Mode**: Beautiful dark mode support with smooth transitions and persistent preferences
 - **📱 Responsive**: Works great on all devices
 
 ### Advanced Features
