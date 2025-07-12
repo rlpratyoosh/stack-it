@@ -82,6 +82,7 @@ export default async function MyQuestionsPage() {
               createdAt={question.createdAt.toISOString()}
               tags={question.tags}
               answersCount={question.answers?.length || 0}
+              canDelete={true}
             />
           ))}
         </div>

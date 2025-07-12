@@ -3,9 +3,16 @@ import QuestionCard from '@/components/Question-Card';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Plus } from 'lucide-react';
+import { auth } from '@clerk/nextjs/server';
 
 export default async function HomePage() {
+  const { userId } = await auth();
   const questions = await db.getAllQuestions(); // from prisma-db.ts
+  
+  let currentUser = null;
+  if (userId) {
+    currentUser = await db.getOrCreateUser(userId);
+  }
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-zinc-950">
@@ -51,6 +58,7 @@ export default async function HomePage() {
                 author={q.user}
                 tags={q.tags}
                 answersCount={q.answers.length}
+                canDelete={currentUser?.id === q.userId}
               />
             ))}
           </div>

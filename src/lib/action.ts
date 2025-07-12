@@ -130,3 +130,46 @@ export async function markAnswerAccepted(questionId: string, answerId: string) {
   await db.updateQuestionAcceptedAnswer(questionId, answerId);
   revalidatePath(`/question/${questionId}`);
 }
+
+// ✅ Delete a question
+export async function deleteQuestion(questionId: string, shouldRedirect: boolean = true) {
+  try {
+    const { userId } = await auth();
+    if (!userId) throw new Error('Unauthorized');
+
+    // Get the current user from database
+    const currentUser = await db.getOrCreateUser(userId);
+    
+    const question = await db.getQuestionById(questionId);
+    if (!question) throw new Error('Question not found');
+    
+    // Debug logging
+    console.log('Delete question attempt:', {
+      clerkUserId: userId,
+      currentDbUserId: currentUser.id,
+      questionUserId: question.userId,
+      questionId
+    });
+    
+    // Only the question owner can delete the question
+    if (question.userId !== currentUser.id) {
+      console.log('Authorization failed: User IDs do not match');
+      throw new Error('Only the question owner can delete this question');
+    }
+
+    console.log('Authorization successful, deleting question');
+    await db.deleteQuestion(questionId);
+    
+    revalidatePath('/');
+    revalidatePath('/my-questions');
+    
+    if (shouldRedirect) {
+      redirect('/');
+    }
+    
+    return { success: true };
+  } catch (error) {
+    console.error('Question deletion error:', error);
+    throw error;
+  }
+}

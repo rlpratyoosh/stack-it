@@ -65,6 +65,7 @@ export default async function EachUserPage({
                 author={question.user}
                 tags={question.tags}
                 answersCount={question.answers.length}
+                canDelete={isOwnProfile}
               />
             ))}
           </div>

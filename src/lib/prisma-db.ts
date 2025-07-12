@@ -216,4 +216,38 @@ export const db = {
       data: { acceptedAnswerId: answerId },
     });
   },
+
+  deleteQuestion: async (questionId: string) => {
+    // Delete in order due to foreign key constraints
+    // 1. Delete question tags
+    await prisma.questionTag.deleteMany({
+      where: { questionId },
+    });
+
+    // 2. Delete votes on answers for this question
+    await prisma.vote.deleteMany({
+      where: {
+        answer: {
+          questionId,
+        },
+      },
+    });
+
+    // 3. Delete answers
+    await prisma.answer.deleteMany({
+      where: { questionId },
+    });
+
+    // 4. Delete notifications related to this question
+    await prisma.notification.deleteMany({
+      where: {
+        link: `/question/${questionId}`,
+      },
+    });
+
+    // 5. Finally delete the question
+    return prisma.question.delete({
+      where: { id: questionId },
+    });
+  },
 };
