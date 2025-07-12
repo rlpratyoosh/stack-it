@@ -69,15 +69,15 @@ export default function AnswerCard({
   return (
     <div 
       className={clsx(
-        "bg-white dark:bg-zinc-900 border rounded-2xl p-5 shadow-sm hover:shadow-md transition-all",
+        "bg-white dark:bg-zinc-900 border rounded-2xl p-3 sm:p-4 lg:p-5 shadow-sm hover:shadow-md transition-all",
         optimisticAccepted 
           ? "border-green-300 dark:border-green-700 bg-green-50 dark:bg-green-900/10"
           : "border-gray-300 dark:border-zinc-700"
       )}
     >
-      <div className="flex gap-4">
+      <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
         {/* Vote buttons */}
-        <div className="flex-shrink-0">
+        <div className="flex-shrink-0 order-2 sm:order-1">
           <VoteButton
             answerId={id}
             currentUserVote={currentUserVote}
@@ -86,7 +86,7 @@ export default function AnswerCard({
         </div>
 
         {/* Answer content */}
-        <div className="flex-1 space-y-3">
+        <div className="flex-1 space-y-2 sm:space-y-3 order-1 sm:order-2">
           {/* Accepted badge */}
           {optimisticAccepted && (
             <div className="flex items-center gap-2 text-green-600 text-sm font-medium">
@@ -102,7 +102,7 @@ export default function AnswerCard({
           />
 
           {/* Footer */}
-          <div className="flex items-center justify-between pt-3 border-t border-gray-200 dark:border-zinc-700">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-0 pt-3 border-t border-gray-200 dark:border-zinc-700">
             <div className="text-xs text-gray-500 dark:text-gray-400">
               answered {timeAgo} by <span className="font-medium">{author.username}</span>
             </div>
@@ -114,16 +114,16 @@ export default function AnswerCard({
                 disabled={isPending}
                 variant="outline"
                 size="sm"
-                className="text-green-600 border-green-300 hover:bg-green-50 dark:hover:bg-green-900/20"
+                className="text-green-600 border-green-300 hover:bg-green-50 dark:hover:bg-green-900/20 text-xs sm:text-sm w-full sm:w-auto"
               >
-                <Check className="h-4 w-4 mr-1" />
+                <Check className="h-3 w-3 sm:h-4 sm:w-4 mr-1" />
                 {isPending ? 'Accepting...' : 'Accept Answer'}
               </Button>
             )}
           </div>
 
           {/* Comments Section */}
-          <div className="pt-3">
+          <div className="pt-2 sm:pt-3">
             <CommentSection
               answerId={id}
               initialComments={comments}

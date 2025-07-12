@@ -61,19 +61,19 @@ export default function QuestionCard({
   }
 
   return (
-    <div className="bg-white dark:bg-zinc-900 border border-gray-300 dark:border-zinc-700 p-5 rounded-2xl shadow-sm hover:shadow-md transition-all space-y-2">
+    <div className="bg-white dark:bg-zinc-900 border border-gray-300 dark:border-zinc-700 p-3 sm:p-4 lg:p-5 rounded-2xl shadow-sm hover:shadow-md transition-all space-y-2 sm:space-y-3">
       <Link href={`/question/${id}`}>
-        <h2 className="text-xl font-semibold text-blue-600 hover:underline line-clamp-2">
+        <h2 className="text-lg sm:text-xl font-semibold text-blue-600 hover:underline line-clamp-2">
           {title}
         </h2>
       </Link>
 
       <div
-        className="text-sm text-zinc-700 dark:text-zinc-300 line-clamp-3"
+        className="prose prose-xs sm:prose-sm text-zinc-700 dark:text-zinc-300 line-clamp-2 sm:line-clamp-3 max-w-none"
         dangerouslySetInnerHTML={{ __html: description }}
       />
 
-      <div className="flex flex-wrap gap-2 mt-2">
+      <div className="flex flex-wrap gap-1 sm:gap-2 mt-2">
         {tags.map(({ tag }) => (
           <span
             key={tag.id}
@@ -84,9 +84,9 @@ export default function QuestionCard({
         ))}
       </div>
 
-      <div className="text-xs text-gray-500 flex justify-between items-center mt-2">
+      <div className="text-xs text-gray-500 flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2 sm:gap-0 mt-2">
         <span>By {author.username}</span>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center justify-between sm:justify-end gap-2">
           <span>
             {answersCount} answers • {timeAgo}
           </span>

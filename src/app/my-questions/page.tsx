@@ -8,28 +8,30 @@ import { Plus } from "lucide-react";
 
 export default async function MyQuestionsPage() {
   const { userId } = await auth();
-  
+
   if (!userId) {
     redirect("/sign-in");
   }
 
   // Get or create user
   const user = await db.getOrCreateUser(userId);
-  
+
   // Get user's questions
   const questions = await db.getQuestionsByUser(user.id);
 
   return (
     <div className="max-w-4xl mx-auto p-6">
-      <div className="flex items-center justify-between mb-6">
-        <div>
-          <h1 className="text-3xl font-bold">Your Questions</h1>
-          <p className="text-gray-600 dark:text-gray-400 mt-2">
+      <div className="flex flex-col sm:flex-row items-center sm:justify-between mb-6 gap-4">
+        <div className="w-full sm:w-auto">
+          <h1 className="text-center sm:text-left text-3xl font-bold">
+            Your Questions
+          </h1>
+          <p className="text-center sm:text-left text-gray-600 dark:text-gray-400 mt-2">
             Manage and track all the questions you&apos;ve asked
           </p>
         </div>
-        <Link href="/ask">
-          <Button className="flex items-center gap-2">
+        <Link href="/ask" className="w-full sm:w-auto">
+          <Button className="flex items-center gap-2 w-full sm:w-auto justify-center">
             <Plus className="h-4 w-4" />
             Ask New Question
           </Button>
@@ -57,7 +59,8 @@ export default async function MyQuestionsPage() {
             No questions yet
           </h3>
           <p className="text-gray-600 dark:text-gray-400 mb-6">
-            You haven&apos;t asked any questions yet. Start by asking your first question!
+            You haven&apos;t asked any questions yet. Start by asking your first
+            question!
           </p>
           <Link href="/ask">
             <Button>
@@ -67,10 +70,7 @@ export default async function MyQuestionsPage() {
           </Link>
         </div>
       ) : (
-        <QuestionsWithSearch 
-          questions={questions}
-          currentUserId={user.id}
-        />
+        <QuestionsWithSearch questions={questions} currentUserId={user.id} />
       )}
     </div>
   );

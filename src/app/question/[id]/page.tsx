@@ -27,18 +27,18 @@ export default async function EachQuestion({
   const isQuestionOwner = currentUser?.id === question.userId;
 
   return (
-    <div className="max-w-4xl mx-auto p-6 space-y-6">
+    <div className="max-w-4xl mx-auto p-3 sm:p-4 lg:p-6 space-y-4 sm:space-y-6">
       {/* Question */}
-      <div className="bg-white dark:bg-zinc-900 border border-gray-300 dark:border-zinc-700 rounded-2xl p-6 shadow-sm">
-        <h1 className="text-3xl font-bold mb-4">{question.title}</h1>
+      <div className="bg-white dark:bg-zinc-900 border border-gray-300 dark:border-zinc-700 rounded-2xl p-3 sm:p-4 lg:p-6 shadow-sm">
+        <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold mb-3 sm:mb-4">{question.title}</h1>
         
         <div
-          className="prose prose-sm dark:prose-invert max-w-none mb-4"
+          className="prose prose-xs sm:prose-sm dark:prose-invert max-w-none mb-3 sm:mb-4"
           dangerouslySetInnerHTML={{ __html: question.description }}
         />
         
         {/* Tags */}
-        <div className="flex flex-wrap gap-2 mb-4">
+        <div className="flex flex-wrap gap-1 sm:gap-2 mb-3 sm:mb-4">
           {question.tags.map(({ tag }) => (
             <span
               key={tag.id}
@@ -50,14 +50,14 @@ export default async function EachQuestion({
         </div>
         
         {/* Meta info */}
-        <div className="text-sm text-gray-600 dark:text-gray-400 border-t border-gray-200 dark:border-zinc-700 pt-4">
+        <div className="text-xs sm:text-sm text-gray-600 dark:text-gray-400 border-t border-gray-200 dark:border-zinc-700 pt-3 sm:pt-4">
           Asked {timeAgo} by <span className="font-medium">{question.user.username}</span>
         </div>
       </div>
 
       {/* Answers section */}
-      <div className="space-y-4">
-        <h2 className="text-2xl font-bold">
+      <div className="space-y-3 sm:space-y-4">
+        <h2 className="text-xl sm:text-2xl font-bold">
           {question.answers.length} {question.answers.length === 1 ? 'Answer' : 'Answers'}
         </h2>
         

@@ -162,7 +162,57 @@
   
   .prose ul,
   .prose ol {
-    @apply text-gray-700 dark:text-gray-300;
+    @apply text-gray-700 dark:text-gray-300 my-4 ml-6;
+  }
+  
+  .prose ul {
+    @apply list-disc;
+  }
+  
+  .prose ol {
+    @apply list-decimal;
+  }
+  
+  .prose li {
+    @apply mb-2;
+  }
+  
+  /* TipTap Editor specific list styles */
+  .ProseMirror ul {
+    @apply list-disc ml-6 my-4;
+  }
+  
+  .ProseMirror ol {
+    @apply list-decimal ml-6 my-4;
+  }
+  
+  .ProseMirror li {
+    @apply mb-1;
+  }
+  
+  .ProseMirror ul li::marker,
+  .ProseMirror ol li::marker {
+    @apply text-gray-600 dark:text-gray-400;
+  }
+  
+  /* Nested list support */
+  .prose ul ul,
+  .prose ol ul,
+  .prose ul ol,
+  .prose ol ol,
+  .ProseMirror ul ul,
+  .ProseMirror ol ul,
+  .ProseMirror ul ol,
+  .ProseMirror ol ol {
+    @apply my-2 ml-4;
+  }
+  
+  /* Ensure list items have proper spacing */
+  .prose ul > li,
+  .prose ol > li,
+  .ProseMirror ul > li,
+  .ProseMirror ol > li {
+    @apply pl-1;
   }
   
   .prose blockquote {

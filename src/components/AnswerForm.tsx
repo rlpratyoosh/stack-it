@@ -75,8 +75,8 @@ export default function AnswerForm({ questionId }: AnswerFormProps) {
   };
 
   return (
-    <div className="bg-white dark:bg-zinc-900 border border-gray-300 dark:border-zinc-700 rounded-2xl p-6">
-      <h3 className="text-xl font-semibold mb-4">Your Answer</h3>
+    <div className="bg-white dark:bg-zinc-900 border border-gray-300 dark:border-zinc-700 rounded-2xl p-3 sm:p-4 lg:p-6">
+      <h3 className="text-lg sm:text-xl font-semibold mb-3 sm:mb-4">Your Answer</h3>
       
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
         {/* Rich text editor */}

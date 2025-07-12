@@ -61,7 +61,7 @@ export default function VoteButton({
   };
 
   return (
-    <div className="flex flex-col items-center space-y-1">
+    <div className="flex flex-row sm:flex-col items-center space-x-1 sm:space-x-0 sm:space-y-1">
       {/* Upvote button */}
       <Button
         variant="ghost"
@@ -69,19 +69,19 @@ export default function VoteButton({
         onClick={() => handleVote(1)}
         disabled={isPending}
         className={clsx(
-          'p-1 h-8 w-8',
+          'p-1 h-7 w-7 sm:h-8 sm:w-8',
           optimisticVote === 1 
             ? 'text-green-600 bg-green-50 dark:bg-green-900/20' 
             : 'text-gray-600 dark:text-gray-400 hover:text-green-600'
         )}
       >
-        <ChevronUp className="h-5 w-5" />
+        <ChevronUp className="h-4 w-4 sm:h-5 sm:w-5" />
       </Button>
 
       {/* Score display */}
       <span 
         className={clsx(
-          'text-sm font-medium px-2 py-1 rounded',
+          'text-xs sm:text-sm font-medium px-1.5 sm:px-2 py-0.5 sm:py-1 rounded min-w-[2rem] text-center',
           optimisticScore > 0 
             ? 'text-green-600 bg-green-50 dark:bg-green-900/20'
             : optimisticScore < 0
@@ -99,13 +99,13 @@ export default function VoteButton({
         onClick={() => handleVote(-1)}
         disabled={isPending}
         className={clsx(
-          'p-1 h-8 w-8',
+          'p-1 h-7 w-7 sm:h-8 sm:w-8',
           optimisticVote === -1 
             ? 'text-red-600 bg-red-50 dark:bg-red-900/20' 
             : 'text-gray-600 dark:text-gray-400 hover:text-red-600'
         )}
       >
-        <ChevronDown className="h-5 w-5" />
+        <ChevronDown className="h-4 w-4 sm:h-5 sm:w-5" />
       </Button>
     </div>
   );
