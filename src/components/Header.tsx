@@ -6,6 +6,8 @@ import { Button } from "./ui/button";
 import { Plus } from "lucide-react";
 import { db } from "@/lib/prisma-db";
 import NotificationBell from "./NotificationBell";
+import { MdHomeFilled } from "react-icons/md";
+import { TbMessageQuestion } from "react-icons/tb";
 
 export default async function Header() {
   const { userId } = await auth();
@@ -42,13 +44,13 @@ export default async function Header() {
       <div className="flex items-center justify-center gap-4">
         <SignedIn>
           <Link href='/'>
-            <Button variant='ghost' className="cursor-pointer">
-              Home
+            <Button variant='ghost' className="cursor-pointer flex items-center gap-1">
+              <MdHomeFilled />Home
             </Button>
           </Link>
           <Link href='/my-questions'>
-            <Button variant='ghost' className="cursor-pointer">
-              Your Questions
+            <Button variant='ghost' className="cursor-pointer flex items-center gap-1">
+              <TbMessageQuestion />Your Questions
             </Button>
           </Link>
           <Link href='/ask'>
