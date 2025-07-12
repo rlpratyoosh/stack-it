@@ -34,7 +34,7 @@ A modern, full-stack Q&A forum built with Next.js, TypeScript, Tailwind CSS, and
 
 1. **Clone the repository**
    ```bash
-   git clone <your-repo-url>
+   git clone https://github.com/rlpratyoosh/stack-it
    cd stack-it
    ```
 
