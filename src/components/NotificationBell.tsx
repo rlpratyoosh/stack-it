@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { Bell } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
+import { markNotificationAsRead } from '@/lib/action';
 
 type Notification = {
   id: string;
@@ -27,12 +28,25 @@ export default function NotificationBell({
   const unreadCount = notifications.filter(n => !n.isRead).length;
 
   const markAsRead = async (notificationId: string) => {
-    // In a real app, you'd call an API to mark as read
+    // Optimistically update the UI
     setNotifications(prev => 
       prev.map(n => 
         n.id === notificationId ? { ...n, isRead: true } : n
       )
     );
+    
+    // Call the server action
+    try {
+      await markNotificationAsRead(notificationId);
+    } catch (error) {
+      console.error('Error marking notification as read:', error);
+      // Revert the optimistic update on error
+      setNotifications(prev => 
+        prev.map(n => 
+          n.id === notificationId ? { ...n, isRead: false } : n
+        )
+      );
+    }
   };
 
   return (

@@ -91,6 +91,7 @@ export default async function EachQuestion({
                   canAccept={isQuestionOwner}
                   currentUserId={currentUser?.id}
                   questionId={question.id}
+                  comments={answer.comments}
                 />
               ))
             }

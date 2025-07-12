@@ -7,6 +7,7 @@ import VoteButton from "./VoteButton";
 import { markAnswerAccepted } from "@/lib/action";
 import clsx from "clsx";
 import { useOptimistic, useTransition } from "react";
+import CommentSection from "./CommentSection";
 
 type AnswerCardProps = {
   id: string;
@@ -18,6 +19,13 @@ type AnswerCardProps = {
   canAccept: boolean;
   currentUserId?: string;
   questionId: string;
+  comments?: {
+    id: string;
+    content: string;
+    user: { username: string };
+    createdAt: Date;
+    userId: string;
+  }[];
 };
 
 export default function AnswerCard({
@@ -30,6 +38,7 @@ export default function AnswerCard({
   canAccept,
   currentUserId,
   questionId,
+  comments = [],
 }: AnswerCardProps) {
   const timeAgo = formatDistanceToNow(new Date(createdAt), { addSuffix: true });
   const [isPending, startTransition] = useTransition();
@@ -111,6 +120,16 @@ export default function AnswerCard({
                 {isPending ? 'Accepting...' : 'Accept Answer'}
               </Button>
             )}
+          </div>
+
+          {/* Comments Section */}
+          <div className="pt-3">
+            <CommentSection
+              answerId={id}
+              initialComments={comments}
+              currentUserId={currentUserId}
+              isLoggedIn={!!currentUserId}
+            />
           </div>
         </div>
       </div>

@@ -23,6 +23,7 @@ model User {
   questions  Question[]
   answers    Answer[]
   votes      Vote[]
+  comments   Comment[]
   notifications Notification[]
   createdAt  DateTime   @default(now())
 }
@@ -47,6 +48,7 @@ model Answer {
   question   Question  @relation(fields: [questionId], references: [id])
   user       User      @relation(fields: [userId], references: [id])
   votes      Vote[]
+  comments   Comment[]
   createdAt  DateTime  @default(now())
 }
 
@@ -73,6 +75,16 @@ model Vote {
   answer    Answer   @relation(fields: [answerId], references: [id])
   
   @@unique([userId, answerId])
+}
+
+model Comment {
+  id        String   @id @default(cuid())
+  content   String
+  userId    String
+  answerId  String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  answer    Answer   @relation(fields: [answerId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
 }
 
 model Notification {

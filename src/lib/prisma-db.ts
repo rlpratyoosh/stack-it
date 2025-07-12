@@ -95,6 +95,12 @@ export const db = {
           include: {
             user: true,
             votes: true,
+            comments: {
+              include: {
+                user: true,
+              },
+              orderBy: { createdAt: 'asc' },
+            },
           },
         },
       },
@@ -133,6 +139,16 @@ export const db = {
         questionId,
         userId,
         content,
+      },
+    });
+  },
+
+  getAnswerById: async (answerId: string) => {
+    return prisma.answer.findUnique({
+      where: { id: answerId },
+      include: {
+        user: true,
+        question: true,
       },
     });
   },
@@ -178,6 +194,13 @@ export const db = {
     return prisma.notification.findMany({
       where: { userId },
       orderBy: { createdAt: "desc" },
+    });
+  },
+
+  markNotificationAsRead: async (notificationId: string) => {
+    return prisma.notification.update({
+      where: { id: notificationId },
+      data: { isRead: true },
     });
   },
 
@@ -248,6 +271,40 @@ export const db = {
     // 5. Finally delete the question
     return prisma.question.delete({
       where: { id: questionId },
+    });
+  },
+
+  // 💬 COMMENTS
+  createComment: async ({
+    content,
+    userId,
+    answerId,
+  }: {
+    content: string;
+    userId: string;
+    answerId: string;
+  }) => {
+    return prisma.comment.create({
+      data: { content, userId, answerId },
+      include: {
+        user: true,
+      },
+    });
+  },
+
+  getCommentsByAnswer: async (answerId: string) => {
+    return prisma.comment.findMany({
+      where: { answerId },
+      include: {
+        user: true,
+      },
+      orderBy: { createdAt: 'asc' },
+    });
+  },
+
+  deleteComment: async (commentId: string) => {
+    return prisma.comment.delete({
+      where: { id: commentId },
     });
   },
 };

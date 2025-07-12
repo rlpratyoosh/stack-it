@@ -10,14 +10,26 @@ A modern, full-stack Q&A forum built with Next.js, TypeScript, Tailwind CSS, and
 
 ## 🚀 Features
 
+### Core Features
 - **🔐 Authentication**: Secure user authentication with Clerk
 - **📝 Rich Text Editor**: Create questions and answers with Tiptap rich text editor
-- **🏷️ Tag System**: Organize questions with multi-tag support
-- **👍 Voting System**: Vote on answers to help the community
+- **🏷️ Tag System**: Organize questions with multi-tag support and auto-creation
+- **👍 Voting System**: Vote on answers to help the community with optimistic UI
 - **✅ Accept Answers**: Question owners can mark answers as accepted
-- **🔔 Notifications**: Get notified when someone answers your questions
+- **🔔 Notifications**: Get notified for comments and @mentions
+- **💬 Comment System**: Comment on answers with @mention support
 - **🌙 Dark Mode**: Beautiful dark mode support
 - **📱 Responsive**: Works great on all devices
+
+### Advanced Features
+- **🔍 Search & Filter**: Advanced search by text, filter by status (answered/unanswered)
+- **📊 Sorting**: Sort questions by newest, oldest, most answers, or least answers
+- **👤 User Profiles**: View user profiles with their questions and stats
+- **📋 My Questions**: Dedicated page to manage your own questions
+- **🗑️ Delete Questions**: Question owners can delete their questions with cascading deletes
+- **⚡ Optimistic UI**: Real-time updates for voting, answer acceptance, and question deletion
+- **🎯 Auto User Creation**: Users are automatically created on first interaction
+- **🔄 Database Seeding**: Pre-populated with common programming tags
 
 ## 🛠️ Tech Stack
 
@@ -57,7 +69,7 @@ A modern, full-stack Q&A forum built with Next.js, TypeScript, Tailwind CSS, and
    ```bash
    npx prisma migrate dev
    npx prisma generate
-   npx prisma db seed
+   npm run db:seed
    ```
 
 5. **Run the development server**
@@ -71,20 +83,22 @@ A modern, full-stack Q&A forum built with Next.js, TypeScript, Tailwind CSS, and
 
 The application uses the following main models:
 
-- **User**: Stores user information from Clerk
+- **User**: Stores user information from Clerk with auto-creation
 - **Question**: Forum questions with title, description, and tags
-- **Answer**: Answers to questions with voting support
-- **Tag**: Categorization system for questions
+- **Answer**: Answers to questions with voting and comment support
+- **Comment**: Comments on answers with @mention functionality
+- **Tag**: Categorization system for questions with auto-creation
 - **Vote**: User votes on answers (+1 or -1)
-- **Notification**: User notifications for interactions
+- **Notification**: User notifications for comments and @mentions
 
 ## 🔧 Setup Instructions
 
 ### 1. Database Setup
 
-1. Create a PostgreSQL database
+1. Create a PostgreSQL database (Railway, Supabase, or local)
 2. Update `DATABASE_URL` in your `.env.local`
 3. Run migrations: `npx prisma migrate dev`
+4. Seed default tags: `npm run db:seed`
 
 ### 2. Clerk Setup
 
@@ -133,23 +147,32 @@ The application uses Tailwind CSS v4 with:
 - `npm run start` - Start production server
 - `npm run lint` - Run ESLint
 - `npm run db:seed` - Seed database with default tags
+- `npx prisma studio` - Open Prisma Studio for database management
+- `npx prisma migrate dev` - Create and apply new migrations
+- `npx prisma generate` - Regenerate Prisma client
 
 ### Project Structure
 
 ```
 src/
-├── app/                 # Next.js app router pages
-│   ├── api/            # API routes
-│   ├── ask/            # Ask question page
-│   ├── question/       # Question detail pages
-│   └── user/           # User profile pages
-├── components/         # React components
-├── lib/               # Utility functions
-│   ├── actions.ts     # Server actions
-│   ├── prisma-db.ts   # Database queries
-│   ├── validations.ts # Zod schemas
-│   └── utils.ts       # Helper functions
-└── prisma/            # Database schema and migrations
+├── app/                    # Next.js app router pages
+│   ├── ask/               # Ask question page
+│   ├── my-questions/      # User's own questions
+│   ├── question/[id]/     # Question detail pages
+│   └── user/[id]/         # User profile pages
+├── components/            # React components
+│   ├── ui/               # Shadcn/ui components
+│   ├── AnswerCard.tsx    # Answer display with comments
+│   ├── CommentSection.tsx # Comment system
+│   ├── QuestionsWithSearch.tsx # Search/filter/sort
+│   ├── NotificationBell.tsx # Notification system
+│   └── ...
+├── lib/                  # Utility functions
+│   ├── action.ts        # Server actions
+│   ├── prisma-db.ts     # Database queries
+│   ├── validations.ts   # Zod schemas
+│   └── utils.ts         # Helper functions
+└── prisma/              # Database schema and migrations
 ```
 
 ## 🤝 Contributing
