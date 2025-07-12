@@ -1,7 +1,7 @@
 import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 import { db } from "@/lib/prisma-db";
-import QuestionsList from "@/components/QuestionsList";
+import QuestionsWithSearch from "@/components/QuestionsWithSearch";
 
 export default async function EachUserPage({ 
   params 
@@ -54,12 +54,10 @@ export default async function EachUserPage({
             {isOwnProfile ? "You haven't asked any questions yet." : "No questions asked yet."}
           </p>
         ) : (
-          <div className="space-y-4">
-            <QuestionsList 
-              questions={questions}
-              currentUserId={isOwnProfile ? user.id : undefined}
-            />
-          </div>
+          <QuestionsWithSearch 
+            questions={questions}
+            currentUserId={isOwnProfile ? user.id : undefined}
+          />
         )}
       </div>
     </div>

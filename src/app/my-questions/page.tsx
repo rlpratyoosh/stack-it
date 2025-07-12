@@ -1,7 +1,7 @@
 import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 import { db } from "@/lib/prisma-db";
-import QuestionsList from "@/components/QuestionsList";
+import QuestionsWithSearch from "@/components/QuestionsWithSearch";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
@@ -67,16 +67,10 @@ export default async function MyQuestionsPage() {
           </Link>
         </div>
       ) : (
-        <div className="space-y-4">
-          <div className="text-sm text-gray-600 dark:text-gray-400 mb-4">
-            {questions.length} {questions.length === 1 ? 'question' : 'questions'} asked
-          </div>
-          
-          <QuestionsList 
-            questions={questions}
-            currentUserId={user.id}
-          />
-        </div>
+        <QuestionsWithSearch 
+          questions={questions}
+          currentUserId={user.id}
+        />
       )}
     </div>
   );

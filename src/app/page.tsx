@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Plus } from 'lucide-react';
 import { auth } from '@clerk/nextjs/server';
-import QuestionsList from '@/components/QuestionsList';
+import QuestionsWithSearch from '@/components/QuestionsWithSearch';
 
 export default async function HomePage() {
   const { userId } = await auth();
@@ -21,9 +21,6 @@ export default async function HomePage() {
         <div className="flex items-center justify-between">
           <div>
             <h1 className="text-3xl font-bold mb-2">All Questions</h1>
-            <p className="text-gray-600 dark:text-gray-400">
-              {questions.length} questions in our community
-            </p>
           </div>
           <Link href="/ask">
             <Button className="flex items-center gap-2">
@@ -33,25 +30,11 @@ export default async function HomePage() {
           </Link>
         </div>
 
-        {/* Questions list */}
-        {questions.length === 0 ? (
-          <div className="text-center py-12">
-            <p className="text-zinc-500 dark:text-zinc-400 text-lg mb-4">
-              No questions posted yet.
-            </p>
-            <Link href="/ask">
-              <Button>
-                <Plus className="h-4 w-4 mr-2" />
-                Be the first to ask a question
-              </Button>
-            </Link>
-          </div>
-        ) : (
-          <QuestionsList 
-            questions={questions} 
-            currentUserId={currentUser?.id}
-          />
-        )}
+        {/* Questions with Search and Filters */}
+        <QuestionsWithSearch 
+          questions={questions} 
+          currentUserId={currentUser?.id}
+        />
       </div>
     </div>
   );
