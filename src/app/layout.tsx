@@ -14,12 +14,8 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-<<<<<<< HEAD
-      <body>
-        <Header />
-=======
       <body className="dark">
->>>>>>> 7acd854cef9c4fd08a4e6f7ec42f1b42a9a6d4f2
+        <Header />
         {children}
       </body>
     </html>
