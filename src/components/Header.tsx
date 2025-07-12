@@ -29,34 +29,36 @@ export default async function Header() {
   }
 
   return (
-    <header className="w-full h-16 bg-card border-border border-b flex items-center justify-between p-5">
-      <div className="h-full flex items-center justify-center gap-2 px-6">
+    <header className="w-full h-16 bg-card border-border border-b flex items-center justify-between p-2 sm:p-5">
+      <div className="h-full flex items-center justify-center px-2 sm:px-6">
         <Link href="/" className="flex items-center gap-2">
-          <div className="text-3xl">
+          <div className="text-2xl">
             <SiBetterstack />
           </div>
-          <h1 className="text-2xl font-bold">
+          <h1 className="text-xl font-bold">
             StackIt
           </h1>
         </Link>
       </div>
       
-      <div className="flex items-center justify-center gap-4">
+      <div className="flex items-center justify-center gap-3">
         <SignedIn>
           <Link href='/'>
-            <Button variant='ghost' className="cursor-pointer flex items-center gap-1">
-              <MdHomeFilled />Home
+            <Button variant='ghost' className="cursor-pointer flex items-center gap-1 text-sm">
+              <MdHomeFilled />
+              <span className="hidden sm:inline">Home</span>
             </Button>
           </Link>
           <Link href='/my-questions'>
-            <Button variant='ghost' className="cursor-pointer flex items-center gap-1">
-              <TbMessageQuestion />Your Questions
+            <Button variant='ghost' className="cursor-pointer flex items-center gap-1 text-sm">
+              <TbMessageQuestion />
+              <span className="hidden sm:inline">Your Questions</span>
             </Button>
           </Link>
           <Link href='/ask'>
-            <Button variant="default" className="cursor-pointer">
-              <Plus className="h-4 w-4 mr-1" />
-              Ask Question
+            <Button variant="default" className="cursor-pointer flex items-center text-sm">
+              <Plus className="h-3.5 w-3.5" />
+              <span className="hidden sm:inline ml-1">Ask Question</span>
             </Button>
           </Link>
           {user && (
@@ -68,7 +70,7 @@ export default async function Header() {
         </SignedIn>
         <SignedOut>
           <SignInButton mode="modal">
-            <Button className="cursor-pointer">
+            <Button className="cursor-pointer text-sm">
               Sign In
             </Button>
           </SignInButton>
