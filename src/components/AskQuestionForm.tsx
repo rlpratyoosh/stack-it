@@ -8,6 +8,7 @@ import { askQuestion } from '@/lib/action';
 import { Button } from '@/components/ui/button';
 import RichTextEditor from './RichTextEditor';
 import TagSelector from './TagSelector';
+import { useRouter } from 'next/navigation';
 
 interface AskQuestionFormProps {
   availableTags?: string[];
@@ -19,6 +20,7 @@ export default function AskQuestionForm({ availableTags = [] }: AskQuestionFormP
   const [description, setDescription] = useState('');
   const [descriptionError, setDescriptionError] = useState<string>('');
   const [tagsError, setTagsError] = useState<string>('');
+  const router = useRouter();
 
   const {
     register,
@@ -64,7 +66,12 @@ export default function AskQuestionForm({ availableTags = [] }: AskQuestionFormP
       formData.append('tags', JSON.stringify(selectedTags));
 
       console.log('Submitting form...');
-      await askQuestion(formData);
+      const result = await askQuestion(formData, false);
+      
+      if (result?.success && result?.questionId) {
+        // Navigate to the new question page
+        router.push(`/question/${result.questionId}`);
+      }
     } catch (error) {
       console.error('Error submitting question:', error);
       

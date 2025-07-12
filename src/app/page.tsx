@@ -1,9 +1,9 @@
 import { db } from '@/lib/prisma-db';
-import QuestionCard from '@/components/Question-Card';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Plus } from 'lucide-react';
 import { auth } from '@clerk/nextjs/server';
+import QuestionsList from '@/components/QuestionsList';
 
 export default async function HomePage() {
   const { userId } = await auth();
@@ -47,21 +47,10 @@ export default async function HomePage() {
             </Link>
           </div>
         ) : (
-          <div className="space-y-4">
-            {questions.map((q) => (
-              <QuestionCard
-                key={q.id}
-                id={q.id}
-                title={q.title}
-                description={q.description}
-                createdAt={q.createdAt.toISOString()}
-                author={q.user}
-                tags={q.tags}
-                answersCount={q.answers.length}
-                canDelete={currentUser?.id === q.userId}
-              />
-            ))}
-          </div>
+          <QuestionsList 
+            questions={questions} 
+            currentUserId={currentUser?.id}
+          />
         )}
       </div>
     </div>

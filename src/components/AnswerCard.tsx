@@ -1,9 +1,12 @@
+'use client';
+
 import { formatDistanceToNow } from "date-fns/formatDistanceToNow";
 import { Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import VoteButton from "./VoteButton";
 import { markAnswerAccepted } from "@/lib/action";
 import clsx from "clsx";
+import { useOptimistic, useTransition } from "react";
 
 type AnswerCardProps = {
   id: string;
@@ -17,7 +20,7 @@ type AnswerCardProps = {
   questionId: string;
 };
 
-export default async function AnswerCard({
+export default function AnswerCard({
   id,
   content,
   createdAt,
@@ -29,6 +32,8 @@ export default async function AnswerCard({
   questionId,
 }: AnswerCardProps) {
   const timeAgo = formatDistanceToNow(new Date(createdAt), { addSuffix: true });
+  const [isPending, startTransition] = useTransition();
+  const [optimisticAccepted, setOptimisticAccepted] = useOptimistic(isAccepted);
   
   // Calculate vote score and current user's vote
   const totalScore = votes.reduce((sum, vote) => sum + vote.value, 0);
@@ -36,16 +41,27 @@ export default async function AnswerCard({
     ? votes.find(vote => vote.userId === currentUserId)?.value 
     : undefined;
 
-  const handleAcceptAnswer = async () => {
-    'use server';
-    await markAnswerAccepted(questionId, id);
+  const handleAcceptAnswer = () => {
+    if (isPending) return;
+    
+    setOptimisticAccepted(true);
+    
+    startTransition(async () => {
+      try {
+        await markAnswerAccepted(questionId, id);
+      } catch (error) {
+        // Revert optimistic update on error
+        setOptimisticAccepted(isAccepted);
+        console.error('Error accepting answer:', error);
+      }
+    });
   };
 
   return (
     <div 
       className={clsx(
         "bg-white dark:bg-zinc-900 border rounded-2xl p-5 shadow-sm hover:shadow-md transition-all",
-        isAccepted 
+        optimisticAccepted 
           ? "border-green-300 dark:border-green-700 bg-green-50 dark:bg-green-900/10"
           : "border-gray-300 dark:border-zinc-700"
       )}
@@ -63,7 +79,7 @@ export default async function AnswerCard({
         {/* Answer content */}
         <div className="flex-1 space-y-3">
           {/* Accepted badge */}
-          {isAccepted && (
+          {optimisticAccepted && (
             <div className="flex items-center gap-2 text-green-600 text-sm font-medium">
               <Check className="h-4 w-4" />
               Accepted Answer
@@ -83,18 +99,17 @@ export default async function AnswerCard({
             </div>
 
             {/* Accept answer button (only for question owner) */}
-            {canAccept && !isAccepted && (
-              <form action={handleAcceptAnswer}>
-                <Button
-                  type="submit"
-                  variant="outline"
-                  size="sm"
-                  className="text-green-600 border-green-300 hover:bg-green-50 dark:hover:bg-green-900/20"
-                >
-                  <Check className="h-4 w-4 mr-1" />
-                  Accept Answer
-                </Button>
-              </form>
+            {canAccept && !optimisticAccepted && (
+              <Button
+                onClick={handleAcceptAnswer}
+                disabled={isPending}
+                variant="outline"
+                size="sm"
+                className="text-green-600 border-green-300 hover:bg-green-50 dark:hover:bg-green-900/20"
+              >
+                <Check className="h-4 w-4 mr-1" />
+                {isPending ? 'Accepting...' : 'Accept Answer'}
+              </Button>
             )}
           </div>
         </div>

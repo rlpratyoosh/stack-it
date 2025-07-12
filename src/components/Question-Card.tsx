@@ -5,6 +5,7 @@ import { formatDistanceToNow } from "date-fns/formatDistanceToNow";
 import { Button } from "@/components/ui/button";
 import { Trash2 } from "lucide-react";
 import { deleteQuestion } from "@/lib/action";
+import { useOptimistic } from "react";
 
 type QuestionCardProps = {
   id: string;
@@ -14,7 +15,8 @@ type QuestionCardProps = {
   author: { username: string };
   tags: { tag: { id: string; name: string } }[];
   answersCount: number;
-  canDelete?: boolean; // New prop to control delete visibility
+  canDelete?: boolean;
+  onOptimisticDelete?: (id: string) => void; // New prop for optimistic updates
 };
 
 export default function QuestionCard({
@@ -26,23 +28,37 @@ export default function QuestionCard({
   tags,
   answersCount,
   canDelete = false,
+  onOptimisticDelete,
 }: QuestionCardProps) {
   const timeAgo = formatDistanceToNow(new Date(createdAt), { addSuffix: true });
+  const [isDeleting, setIsDeleting] = useOptimistic(false);
 
   const handleDelete = async () => {
     if (confirm("Are you sure you want to delete this question? This action cannot be undone.")) {
       try {
+        // Optimistically mark as deleting
+        setIsDeleting(true);
+        
+        // Call the optimistic delete callback if provided
+        onOptimisticDelete?.(id);
+        
         const result = await deleteQuestion(id, false);
         if (result?.success) {
-          // Optionally show success message or just let the page revalidate
           console.log("Question deleted successfully");
         }
       } catch (error) {
+        // Reset optimistic state on error
+        setIsDeleting(false);
         console.error("Failed to delete question:", error);
         alert("Failed to delete question. Please try again.");
       }
     }
   };
+
+  // Don't render if optimistically deleted
+  if (isDeleting) {
+    return null;
+  }
 
   return (
     <div className="bg-white dark:bg-zinc-900 border border-gray-300 dark:border-zinc-700 p-5 rounded-2xl shadow-sm hover:shadow-md transition-all space-y-2">

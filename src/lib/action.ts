@@ -7,7 +7,7 @@ import { redirect } from 'next/navigation';
 import { questionSchema, answerSchema, voteSchema } from './validations';
 
 // ✅ Ask a question
-export async function askQuestion(formData: FormData) {
+export async function askQuestion(formData: FormData, shouldRedirect: boolean = true) {
   try {
     const { userId } = await auth();
     if (!userId) throw new Error('Unauthorized');
@@ -39,7 +39,12 @@ export async function askQuestion(formData: FormData) {
     });
 
     revalidatePath('/'); 
-    redirect(`/question/${question.id}`); 
+    
+    if (shouldRedirect) {
+      redirect(`/question/${question.id}`); 
+    }
+    
+    return { success: true, questionId: question.id };
   } catch (error) {
     console.error('Question submission error:', error);
     throw error;

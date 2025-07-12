@@ -1,7 +1,7 @@
 import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 import { db } from "@/lib/prisma-db";
-import QuestionCard from "@/components/Question-Card";
+import QuestionsList from "@/components/QuestionsList";
 
 export default async function EachUserPage({ 
   params 
@@ -55,19 +55,10 @@ export default async function EachUserPage({
           </p>
         ) : (
           <div className="space-y-4">
-            {questions.map((question) => (
-              <QuestionCard
-                key={question.id}
-                id={question.id}
-                title={question.title}
-                description={question.description}
-                createdAt={question.createdAt.toISOString()}
-                author={question.user}
-                tags={question.tags}
-                answersCount={question.answers.length}
-                canDelete={isOwnProfile}
-              />
-            ))}
+            <QuestionsList 
+              questions={questions}
+              currentUserId={isOwnProfile ? user.id : undefined}
+            />
           </div>
         )}
       </div>

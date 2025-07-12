@@ -1,7 +1,7 @@
 import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 import { db } from "@/lib/prisma-db";
-import QuestionCard from "@/components/Question-Card";
+import QuestionsList from "@/components/QuestionsList";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
@@ -72,19 +72,10 @@ export default async function MyQuestionsPage() {
             {questions.length} {questions.length === 1 ? 'question' : 'questions'} asked
           </div>
           
-          {questions.map((question) => (
-            <QuestionCard
-              key={question.id}
-              id={question.id}
-              title={question.title}
-              description={question.description}
-              author={question.user}
-              createdAt={question.createdAt.toISOString()}
-              tags={question.tags}
-              answersCount={question.answers?.length || 0}
-              canDelete={true}
-            />
-          ))}
+          <QuestionsList 
+            questions={questions}
+            currentUserId={user.id}
+          />
         </div>
       )}
     </div>
