@@ -1,0 +1,84 @@
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  USER
+  ADMIN
+}
+
+model User {
+  id         String     @id @default(cuid())
+  clerkId    String     @unique
+  username   String
+  email      String
+  role       Role       @default(USER)
+  questions  Question[]
+  answers    Answer[]
+  votes      Vote[]
+  notifications Notification[]
+  createdAt  DateTime   @default(now())
+}
+
+model Question {
+  id          String      @id @default(cuid())
+  title       String
+  description String      // Store HTML or rich JSON
+  userId      String
+  user        User        @relation(fields: [userId], references: [id])
+  answers     Answer[]
+  tags        QuestionTag[]
+  acceptedAnswerId String?  // Mark accepted answer
+  createdAt   DateTime    @default(now())
+}
+
+model Answer {
+  id         String    @id @default(cuid())
+  content    String
+  questionId String
+  userId     String
+  question   Question  @relation(fields: [questionId], references: [id])
+  user       User      @relation(fields: [userId], references: [id])
+  votes      Vote[]
+  createdAt  DateTime  @default(now())
+}
+
+model Tag {
+  id    String         @id @default(cuid())
+  name  String         @unique
+  questions QuestionTag[]
+}
+
+model QuestionTag {
+  id         String   @id @default(cuid())
+  questionId String
+  tagId      String
+  question   Question @relation(fields: [questionId], references: [id])
+  tag        Tag      @relation(fields: [tagId], references: [id])
+}
+
+model Vote {
+  id        String   @id @default(cuid())
+  value     Int      // +1 or -1
+  userId    String
+  answerId  String
+  user      User     @relation(fields: [userId], references: [id])
+  answer    Answer   @relation(fields: [answerId], references: [id])
+}
+
+model Notification {
+  id        String    @id @default(cuid())
+  userId    String
+  message   String
+  isRead    Boolean   @default(false)
+  link      String?   // Optional URL to redirect
+  createdAt DateTime  @default(now())
+  user      User      @relation(fields: [userId], references: [id])
+}
