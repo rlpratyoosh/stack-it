@@ -105,9 +105,28 @@ export async function markAnswerAccepted(questionId: string, answerId: string) {
   const { userId } = await auth();
   if (!userId) throw new Error('Unauthorized');
 
+  // Get the current user from database
+  const currentUser = await db.getOrCreateUser(userId);
+  
   const question = await db.getQuestionById(questionId);
-  if (question?.userId !== userId) throw new Error('Only the question owner can mark accepted');
+  if (!question) throw new Error('Question not found');
+  
+  // Debug logging
+  console.log('Accept answer attempt:', {
+    clerkUserId: userId,
+    currentDbUserId: currentUser.id,
+    questionUserId: question.userId,
+    questionId,
+    answerId
+  });
+  
+  // Compare database user IDs, not Clerk ID vs database ID
+  if (question.userId !== currentUser.id) {
+    console.log('Authorization failed: User IDs do not match');
+    throw new Error('Only the question owner can mark accepted');
+  }
 
+  console.log('Authorization successful, marking answer as accepted');
   await db.updateQuestionAcceptedAnswer(questionId, answerId);
   revalidatePath(`/question/${questionId}`);
 }

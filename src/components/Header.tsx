@@ -46,6 +46,11 @@ export default async function Header() {
               Home
             </Button>
           </Link>
+          <Link href='/my-questions'>
+            <Button variant='ghost' className="cursor-pointer">
+              Your Questions
+            </Button>
+          </Link>
           <Link href='/ask'>
             <Button variant="default" className="cursor-pointer">
               <Plus className="h-4 w-4 mr-1" />

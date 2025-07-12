@@ -101,6 +101,23 @@ export const db = {
     });
   },
 
+  getQuestionsByUser: async (userId: string) => {
+    return prisma.question.findMany({
+      where: { userId },
+      include: {
+        user: true,
+        tags: { include: { tag: true } },
+        answers: {
+          include: {
+            user: true,
+            votes: true,
+          },
+        },
+      },
+      orderBy: { createdAt: 'desc' },
+    });
+  },
+
   // 💬 ANSWERS
   createAnswer: async ({
     questionId,
