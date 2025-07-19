@@ -10,7 +10,6 @@ import Link from "next/link";
 
 interface UserData {
   id: string;
-  clerkId: string;
   username: string;
   email: string;
   role: 'USER' | 'ADMIN';
@@ -118,7 +117,7 @@ export default function AdminUsers({ users }: AdminUsersProps) {
               </div>
 
               <div className="flex items-center gap-2 flex-shrink-0">
-                <Link href={`/user/${user.clerkId}`}>
+                <Link href={`/user/${user.id}`}>
                   <Button variant="outline" size="sm">
                     View Profile
                   </Button>
