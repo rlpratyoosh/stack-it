@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { UserData } from "@/types/user";
 
 import AdminQuestions from "./AdminQuestions";
 import AdminAnswers from "./AdminAnswers";
@@ -73,20 +74,6 @@ interface Comment {
       id: string;
       title: string;
     };
-  };
-}
-
-interface UserData {
-  id: string;
-  username: string;
-  email: string;
-  role: 'USER' | 'ADMIN';
-  createdAt: Date;
-  _count: {
-    questions: number;
-    answers: number;
-    comments: number;
-    votes: number;
   };
 }
 
